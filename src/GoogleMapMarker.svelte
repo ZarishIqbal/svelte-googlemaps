@@ -1,18 +1,12 @@
 <script>
-  import { getContext } from 'svelte'
-  import { key } from './contexts.js'
-
-  const { getMap } = getContext(key)
-  const map = getMap()
-
-  export let lat
-  export let lng
-  export let icon
+  import { mapStore } from "./stores";
+  const map = $mapStore;
+  export let lat;
+  export let lng;
 
   // eslint-disable-next-line no-new
   new window.google.maps.Marker({
     position: { lat, lng },
-    icon,
-    map
-  })
+    map,
+  });
 </script>

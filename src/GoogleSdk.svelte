@@ -1,40 +1,34 @@
 <script>
-  import loader from '@beyonk/async-script-loader'
-  import { onMount, createEventDispatcher } from 'svelte'
-  import { mapsLoaded, mapsLoading } from './stores.js'
+  import { Loader } from "@googlemaps/js-api-loader";
 
-  const dispatch = createEventDispatcher()
+  import { createEventDispatcher, onMount } from "svelte";
+  import { mapsLoaded, mapsLoading } from "./stores.js";
 
-  export let apiKey
-  
-  $: $mapsLoaded && dispatch('ready')
+  const dispatch = createEventDispatcher();
+
+  export let apiKey;
+
+  $: $mapsLoaded && dispatch("ready");
 
   onMount(() => {
     window.byGmapsReady = () => {
-      mapsLoaded.set(true)
-      delete window.byGmapsReady
-    }
+      mapsLoaded.set(true);
+      delete window.byGmapsReady;
+    };
 
     if ($mapsLoaded) {
-      dispatch('ready')
+      dispatch("ready");
     }
 
     if (!$mapsLoading) {
-      const url = [
-        '//maps.googleapis.com/maps/api/js?',
-        apiKey ? `key=${apiKey}&` : '',
-        'libraries=places&callback=byGmapsReady'
-      ].join('')
+      mapsLoading.set(true);
 
-      mapsLoading.set(true)
-
-      loader(
-        [
-          { type: 'script', url }
-        ],
-        () => { return $mapsLoaded },
-        () => {}
-      )
+      const loader = new Loader({
+        apiKey: apiKey,
+        version: "weekly",
+        libraries: ["places"],
+      });
+      loader.load().then((e) => window.byGmapsReady());
     }
-  })
+  });
 </script>

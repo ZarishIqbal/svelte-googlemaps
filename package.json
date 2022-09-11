@@ -11,6 +11,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
+    "@googlemaps/js-api-loader": "^1.14.3",
     "@beyonk/async-script-loader": "^2.0.0",
     "@beyonk/eslint-config": "^4.2.0",
     "@gen/rollup-plugin-generate-html": "^0.1.1",
@@ -44,6 +45,5 @@
     "src",
     "index.mjs",
     "index.js"
-  ],
-  "dependencies": {}
+  ]
 }
